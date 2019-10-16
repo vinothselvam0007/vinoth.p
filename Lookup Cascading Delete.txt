@@ -1,0 +1,13 @@
+if i undelete a parent in Lookup relationship,it will undelete the child too 
+
+
+trigger A_unsel_B_Undel on A__c (after undelete) {
+    set<id> myset=new set<id>();
+    for(A__c a:trigger.new)
+    {
+        myset.add(a.id);
+    }
+    list<B__c> mylist=[SELECT id,name,A__c FROM B__c WHERE A__c IN : myset all rows];
+    UNDELETE mylist;
+
+}
